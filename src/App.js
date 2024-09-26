@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import "./App.css"
+import Tareas from './datos';
+import PaginaInicio from './PaginaInicio';
+import PaginaDetalle from './PaginaDetalle';
+import PaginaCreacion from './PaginaCreacion';
 
 function App() {
+  const [listaTareas, setListaTareas] = useState(Tareas);
+
+  const agregarTarea = (tarea) => {
+    setListaTareas([...listaTareas, tarea]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div class="container">
+        <nav>
+          <Link to="/">Inicio</Link>
+          <Link to="/crear">Crear Tarea</Link>
+        </nav>
+        <Routes>
+          <Route path="/" element={<PaginaInicio tareas={listaTareas} />} />
+          <Route path="/detalle/:id" element={<PaginaDetalle tareas={listaTareas} />} />
+          <Route path="/crear" element={<PaginaCreacion agregarTarea={agregarTarea} />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 
